@@ -11,10 +11,12 @@ public class BoatMover : MonoBehaviour {
 	private Rigidbody m_Rigidbody; // rigidbody for the boat.
 	private float m_CurrentSpeed; // current speed of the boat.
 	private float m_TargetSpeed; // Target Speed of boat.
+	private Rigidbody m_CameraTarget;
 
 	void Awake ()
 	{
 		m_Rigidbody = GetComponent<Rigidbody>();
+		// m_CameraTarget = GetComponentInChildren<Rigidbody>(); // Doesn't work like I hoped
 	}
 
 	void Start () 
@@ -63,6 +65,9 @@ public class BoatMover : MonoBehaviour {
 
 		// apply to rotation
 
+		// Quaternion cameraRotation = m_Rigidbody.rotation;
 		m_Rigidbody.MoveRotation (m_Rigidbody.rotation * turnRotation);
+		// m_CameraTarget.MoveRotation (cameraRotation); // Doesn't work like I hoped.
+		
 	}
 }
