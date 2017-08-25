@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour {
+public class CameraManager : MonoBehaviour
+{
 
 	public Transform m_Target;
 	public float m_Smoothing;
@@ -11,11 +12,14 @@ public class CameraManager : MonoBehaviour {
 	public float m_ClampBottom = 10.0f;
 	public float m_InputSensititivty = 150.0f;
 	public GameObject m_CameraObject;
+	// public Transform m_CameraTransform;
 	public GameObject m_PlayerObject;
 	public float m_MouseX;
 	public float m_MouseY;
 	public float m_FinalInputX;
 	public float m_FinalInputZ;
+	[SerializeField]
+	public float m_AngleFromFront;
 
 	private Vector3 m_Offset;
 	private Transform m_RotateTarget;
@@ -60,9 +64,6 @@ public class CameraManager : MonoBehaviour {
 		Quaternion localRotation = Quaternion.Euler (m_rotX, m_rotY, 0.0f);
 		transform.rotation = localRotation;
 
-
-
-
 	}
 
 	void LateUpdate ()	
@@ -75,8 +76,14 @@ public class CameraManager : MonoBehaviour {
 	void CameraUpdater ()
 	{
 		Transform target = m_PlayerObject.transform;
+		Transform camera = m_CameraObject.transform;
 
 		float step = m_Smoothing * Time.deltaTime;
 		transform.position = Vector3.Lerp(transform.position, target.position, m_Smoothing);
+
+		Vector3 cameraTarget = target.forward;
+		Vector3 forward = camera.forward;
+		m_AngleFromFront = Vector3.SignedAngle(cameraTarget, forward, Vector3.up);
 	}
+
 }
