@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoatMover : MonoBehaviour {
+public class BoatMover : MonoBehaviour 
+{
 
 	public float m_MaxSpeed = 5.0f; // maximum speed
 	public float m_MaxTurnSpeed = 180f; // maximum turn rate in degrees per second
