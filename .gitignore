@@ -49,3 +49,6 @@ fmod.log
 fmod_editor.log
 
 .vscode
+Sailing Ship/Assets/FMODStudioCache.asset
+Sailing Ship/Assets/StreamingAssets/Master Bank.bank
+Sailing Ship/Assets/StreamingAssets/Master Bank.strings.bank
