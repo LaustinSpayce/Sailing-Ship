@@ -21,7 +21,7 @@ MonoBehaviour:
   - {fileID: 114381972844059812}
   MasterBankRef: {fileID: 114805924141760358}
   StringsBankRef: {fileID: 114053590649559556}
-  stringsBankWriteTime: 636396238659517661
+  stringsBankWriteTime: 636396246493186564
   cacheVersion: 2
 --- !u!114 &114053590649559556
 MonoBehaviour:
@@ -35,7 +35,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: Assets\FMOD Banks\Desktop\Master Bank.strings.bank
-  lastModified: 636396238659517661
+  lastModified: 636396246493186564
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: D:\Unity Dev\Simple\Sailing Ship\Sailing-Ship\Sailing Ship\Assets\FMOD Banks\Desktop\Master
     Bank.bank
-  lastModified: 636396238659502497
+  lastModified: 636396246493171553
   LoadResult: 0
   FileSizes:
   - Name: Desktop
