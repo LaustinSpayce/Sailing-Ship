@@ -43,9 +43,9 @@ Thumbs.db
 ###
 # FMOD Implementation and VS Code
 ###
-Sailing Ship/Assets/FMODStudioCache.asset
-Sailing Ship/Assets/StreamingAssets/*.bank
-Sailing Ship/fmod.log
-Sailing Ship/fmod_editor.log
+Assets/FMODStudioCache.asset
+Assets/StreamingAssets/*.bank
+fmod.log
+fmod_editor.log
 
-Sailing Ship/.vscode
+.vscode
