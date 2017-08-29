@@ -39,3 +39,17 @@ sysinfo.txt
 Icon?
 ehthumbs.db
 Thumbs.db
+
+###
+# FMOD Implementation and VS Code
+###
+Assets/FMODStudioCache.asset
+Assets/StreamingAssets/*.bank
+fmod.log
+fmod_editor.log
+
+
+
+.vscode
+
+
