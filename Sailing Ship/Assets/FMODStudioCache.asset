@@ -18,9 +18,10 @@ MonoBehaviour:
   - {fileID: 114384423522898132}
   - {fileID: 114716925198845122}
   - {fileID: 114380231666237058}
+  - {fileID: 114381972844059812}
   MasterBankRef: {fileID: 114805924141760358}
   StringsBankRef: {fileID: 114053590649559556}
-  stringsBankWriteTime: 636393697366181736
+  stringsBankWriteTime: 636396238659517661
   cacheVersion: 2
 --- !u!114 &114053590649559556
 MonoBehaviour:
@@ -34,11 +35,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: Assets\FMOD Banks\Desktop\Master Bank.strings.bank
-  lastModified: 636393697366181736
+  lastModified: 636396238659517661
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 822
+    Value: 874
   Exists: 1
 --- !u!114 &114380231666237058
 MonoBehaviour:
@@ -55,12 +56,33 @@ MonoBehaviour:
   guid: c81a91f0cdec0c4fa1f08f3554d04efa
   Banks:
   - {fileID: 114805924141760358}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &114381972844059812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/CannonBallWaterSplash
+  guid: 66864b8822349f48806f093411ba7959
+  Banks:
+  - {fileID: 114805924141760358}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
+  MinDistance: 5
+  MaxDistance: 50
 --- !u!114 &114384423522898132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,7 +123,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters: []
-  MinDistance: 5
+  MinDistance: 8
   MaxDistance: 100
 --- !u!114 &114805924141760358
 MonoBehaviour:
@@ -116,9 +138,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: D:\Unity Dev\Simple\Sailing Ship\Sailing-Ship\Sailing Ship\Assets\FMOD Banks\Desktop\Master
     Bank.bank
-  lastModified: 636393697366171729
+  lastModified: 636396238659502497
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 414400
+    Value: 3054784
   Exists: 1
