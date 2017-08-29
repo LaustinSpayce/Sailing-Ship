@@ -43,8 +43,8 @@ Thumbs.db
 ###
 # FMOD Implementation and VS Code
 ###
-Assets/FMODStudioCache.asset
-Assets/StreamingAssets/*.bank
+[Aa]ssets/FMODStudioCache.asset
+[Aa]ssets/StreamingAssets/*.bank
 fmod.log
 fmod_editor.log
 
