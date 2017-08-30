@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CannonShoot : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CannonShoot : MonoBehaviour
 	public Transform[] m_CannonPortTransform;		// Array of Cannons on the port side.
 	public Transform[] m_CannonStarboardTransform;	// Array of Cannons on the staboard side.
 	// I quite regret using Port and Starboard, it'd be much easier to use left and right.
+	public Slider m_AimPortSlider; // Port Aim Slider
+	public Slider m_AimStarboardSlider; // Starboard Aim Slider
 	public float m_MinShotSpeed = 15f;        // The force given to the cannonball if the fire button is not held.
     public float m_MaxShotSpeed = 30f;        // The force given to the cannonball if the fire button is held for the max charge time.
     public float m_MaxChargeTime = 0.75f;       // How long the cannon can charge for before it is fired at max force.
@@ -22,6 +25,8 @@ public class CannonShoot : MonoBehaviour
 	// Now for FMOD and Sound stuff
 	[FMODUnity.EventRef]
 	public string m_CannonSound = "event:/Input_1";
+	[FMODUnity.EventRef]
+	public string m_ChargeSound = "event:/Input_2";
 
 	private bool m_Fired = false; // Has a ball been fired
 	private float m_ShotSpeed = 15f;	// Speed of cannon ball when fired
@@ -31,6 +36,7 @@ public class CannonShoot : MonoBehaviour
 	private float m_TimeSinceLastShot;
 	private float m_ChargeSpeed;
 	private float m_CameraAngle;
+	private Slider m_ActiveSlider; // Switch between port and starboard once
 
 	// Use this for initialization
 	void Start () 
@@ -38,6 +44,9 @@ public class CannonShoot : MonoBehaviour
 		m_ShotSpeed = m_MinShotSpeed;
 
 		m_ChargeSpeed = (m_MaxShotSpeed - m_MinShotSpeed) / m_MaxChargeTime;
+
+		m_AimPortSlider.value = m_MinShotSpeed;
+		m_AimStarboardSlider.value = m_MinShotSpeed;
 	}
 	
 	// Update is called once per frame
@@ -61,14 +70,21 @@ public class CannonShoot : MonoBehaviour
 			// We decide wether to fire port or starboard right now.
 			var cameraAngle = m_CameraBase.GetComponent<CameraManager>().m_AngleFromFront; // Get the Camera Angle from the Camera Manager Script
 			if (cameraAngle < 0.0f) // Determine wether it's going to be port or starboard (port is negative degrees)
+				{
 				m_Port = true;
-			else m_Port = false;
+				m_ActiveSlider = m_AimPortSlider;
+				}
+			else {
+				m_Port = false;
+				m_ActiveSlider = m_AimStarboardSlider;
+			}
 		}
 		else if (Input.GetButton ("Fire1") && !m_Fired)
         {
             // Increment the launch force.
             m_ShotSpeed += m_ChargeSpeed * Time.deltaTime;
 			// Update UI.
+			m_ActiveSlider.value = m_ShotSpeed;
 		}
 		else if (Input.GetButtonDown("Fire1") && !m_ReadyToCharge)
 		{
@@ -114,5 +130,6 @@ public class CannonShoot : MonoBehaviour
 		Rigidbody cannonInstance = Instantiate (m_CannonBall, cannonTransform.position, cannonTransform.rotation) as Rigidbody;
 		cannonInstance.velocity = m_ShotSpeed * cannonBallDirection.forward;
 		FMODUnity.RuntimeManager.PlayOneShot (m_CannonSound, cannonTransform.position);
+		m_ActiveSlider.value = m_MinShotSpeed;
 	}
 }
