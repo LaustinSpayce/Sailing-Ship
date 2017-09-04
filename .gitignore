@@ -52,3 +52,4 @@ fmod_editor.log
 Sailing Ship/Assets/FMODStudioCache.asset
 Sailing Ship/Assets/StreamingAssets/Master Bank.bank
 Sailing Ship/Assets/StreamingAssets/Master Bank.strings.bank
+Sailing Ship/Assets/StreamingAssets/*.bank
