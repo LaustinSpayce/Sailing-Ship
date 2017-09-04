@@ -13,6 +13,8 @@ public class CannonShoot : MonoBehaviour
 	// I quite regret using Port and Starboard, it'd be much easier to use left and right.
 	public Slider m_AimPortSlider; // Port Aim Slider
 	public Slider m_AimStarboardSlider; // Starboard Aim Slider
+	public Slider m_CannonRechargeSlider; // Cannon Recharge Slider.
+	public Image m_CannonReadyImage; // Cannon Ready Image.
 	public float m_MinShotSpeed = 15f;        // The force given to the cannonball if the fire button is not held.
     public float m_MaxShotSpeed = 30f;        // The force given to the cannonball if the fire button is held for the max charge time.
     public float m_MaxChargeTime = 0.75f;       // How long the cannon can charge for before it is fired at max force.
@@ -47,6 +49,8 @@ public class CannonShoot : MonoBehaviour
 
 		m_AimPortSlider.value = m_MinShotSpeed;
 		m_AimStarboardSlider.value = m_MinShotSpeed;
+		m_CannonRechargeSlider.value = m_FiringDelay;
+		m_CannonReadyImage.gameObject.SetActive(true);
 	}
 	
 	// Update is called once per frame
@@ -100,18 +104,28 @@ public class CannonShoot : MonoBehaviour
 		}
 		
 		if (!m_ReadyToCharge)
+		{
 			m_TimeSinceLastShot += Time.deltaTime;
+			m_CannonRechargeSlider.value = m_TimeSinceLastShot;
+		}
 
 		if (m_TimeSinceLastShot >= m_FiringDelay)
+		{
 			m_ReadyToCharge = true;
+			m_CannonRechargeSlider.value = m_FiringDelay;
+			m_CannonReadyImage.gameObject.SetActive(true);
+		}
 	}
 
 	void Fire (Transform[] cannonArray)
 	{
 		m_Fired = true;
 		m_TimeSinceLastShot = 0.0f;
+		m_CannonRechargeSlider.value = m_TimeSinceLastShot;
 		m_Charging = false;
 		m_ReadyToCharge = false;
+		m_ActiveSlider.value = m_MinShotSpeed;
+		m_CannonReadyImage.gameObject.SetActive(false);
 		for (int i = 0; i < cannonArray.Length; i++)
 		{
 		StartCoroutine(CannonBoom(cannonArray[i]));
@@ -130,6 +144,5 @@ public class CannonShoot : MonoBehaviour
 		Rigidbody cannonInstance = Instantiate (m_CannonBall, cannonTransform.position, cannonTransform.rotation) as Rigidbody;
 		cannonInstance.velocity = m_ShotSpeed * cannonBallDirection.forward;
 		FMODUnity.RuntimeManager.PlayOneShot (m_CannonSound, cannonTransform.position);
-		m_ActiveSlider.value = m_MinShotSpeed;
 	}
 }
