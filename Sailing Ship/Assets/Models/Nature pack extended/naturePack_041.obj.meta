@@ -3,7 +3,7 @@ guid: 2f467e5eb776e1a498369e054db7136f
 timeCreated: 1466334986
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: Mesh10_Group1_Model
     100002: Mesh1_Group1_Model
@@ -57,6 +57,16 @@ ModelImporter:
     4300014: Mesh7_Group1_Model
     4300016: Mesh8_Group1_Model
     4300018: Mesh9_Group1_Model
+    6400000: Mesh10_Group1_Model
+    6400002: Mesh1_Group1_Model
+    6400004: Mesh2_Group1_Model
+    6400006: Mesh3_Group1_Model
+    6400008: Mesh4_Group1_Model
+    6400010: Mesh5_Group1_Model
+    6400012: Mesh6_Group1_Model
+    6400014: Mesh7_Group1_Model
+    6400016: Mesh8_Group1_Model
+    6400018: Mesh9_Group1_Model
   materials:
     importMaterials: 1
     materialName: 0
@@ -64,9 +74,11 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -77,14 +89,18 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -100,9 +116,11 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -113,7 +131,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 0
   humanoidOversampling: 1
