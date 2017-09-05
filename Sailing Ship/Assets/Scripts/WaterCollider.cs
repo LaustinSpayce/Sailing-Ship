@@ -22,7 +22,8 @@ public class WaterCollider : MonoBehaviour
 			// Debug.Log("Splash!");
 			FMODUnity.RuntimeManager.PlayOneShot (m_CannonBallSplash, position); // Play splashing sound effect.
 			// Play a particle effect for the splash
-			Quaternion angle = Collider.gameObject.transform.rotation;
+			// Quaternion angle = Collider.gameObject.transform.rotation;
+			var angle = Quaternion.identity;
 			angle *= Quaternion.Euler(-90, 0, 0);
 			Instantiate(m_SplashParticles, position, angle); 
 		}

@@ -23,6 +23,7 @@ public class CannonShoot : MonoBehaviour
 	public float m_MaxDelay = 0.25f; // Maximum delay from releasing the fire button until the cannon goes bang.
 	public float m_CrewCompetence = 0.5f; // Multiplier for the max angle deviance. 1 is incompetent, 0 is perfect.
 	public float m_MaxAngleDeviance = 15f; // Maximum angle, in degrees, in a cone around the cannon's direction.
+	public GameObject m_SmokePuff;
 	
 	// Now for FMOD and Sound stuff
 	[FMODUnity.EventRef]
@@ -138,11 +139,10 @@ public class CannonShoot : MonoBehaviour
 		var xDeviance = Random.Range(-m_MaxAngleDeviance, m_MaxAngleDeviance) * m_CrewCompetence; // x degrees variation
 		var zDeviance = Random.Range(-m_MaxAngleDeviance, m_MaxAngleDeviance) * m_CrewCompetence; // z degrees variation
 		var cannonBallDirection = cannonTransform.transform;
-		// Debug.Log(zDeviance);
-		// Debug.Log(xDeviance);
 		cannonBallDirection.Rotate(zDeviance, xDeviance, 0);
 		Rigidbody cannonInstance = Instantiate (m_CannonBall, cannonTransform.position, cannonTransform.rotation) as Rigidbody;
 		cannonInstance.velocity = m_ShotSpeed * cannonBallDirection.forward;
 		FMODUnity.RuntimeManager.PlayOneShot (m_CannonSound, cannonTransform.position);
+		cannonTransform.transform.GetComponent<ParticleSystem>().Play();
 	}
 }
