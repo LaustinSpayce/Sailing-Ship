@@ -23,13 +23,14 @@ public class CannonShoot : MonoBehaviour
 	public float m_MaxDelay = 0.25f; // Maximum delay from releasing the fire button until the cannon goes bang.
 	public float m_CrewCompetence = 0.5f; // Multiplier for the max angle deviance. 1 is incompetent, 0 is perfect.
 	public float m_MaxAngleDeviance = 15f; // Maximum angle, in degrees, in a cone around the cannon's direction.
-	public GameObject m_SmokePuff;
 	
 	// Now for FMOD and Sound stuff
 	[FMODUnity.EventRef]
 	public string m_CannonSound = "event:/Input_1";
 	[FMODUnity.EventRef]
 	public string m_ChargeSound = "event:/Input_2";
+	[FMODUnity.EventRef]
+	public string m_ErrorSound = "Error Sound";	
 
 	private bool m_Fired = false; // Has a ball been fired
 	private float m_ShotSpeed = 15f;	// Speed of cannon ball when fired

@@ -8,8 +8,6 @@ public class TargetCollider : MonoBehaviour
 	{
 		if (Collider.gameObject.CompareTag("Projectile"))
 		{
-			// Debug.Log("Ow I'm hit!");
-			transform.DetachChildren();
 			Destroy(this.gameObject);
 		}
 
