@@ -14,6 +14,8 @@ public class BoatMover : MonoBehaviour
 	public Slider m_BoatSpeedSlider;
 	public float m_SpeedMultiplier = 10.0f;
 	public float m_BoatAcceleration = 0.1f;
+	public TrailRenderer m_Trail;
+	public float m_TrailThreshold;
 
 	private Rigidbody m_Rigidbody; // rigidbody for the boat.
 	private float m_CurrentSpeed; // current speed of the boat.
@@ -26,6 +28,7 @@ public class BoatMover : MonoBehaviour
 		// m_CameraTarget = GetComponentInChildren<Rigidbody>(); // Doesn't work like I hoped
 		m_TargetSpeed = 0.0f;
 		m_CurrentSpeed = 0.0f;
+		m_Trail.gameObject.SetActive(false);
 	}
 
 	void Start () 
@@ -39,6 +42,7 @@ public class BoatMover : MonoBehaviour
 		GetTargetSpeed();
 		MoveBoat();
 		TurnBoat();
+		SetTrail();
 	}
 
 	// Move the boat forward
@@ -90,5 +94,17 @@ public class BoatMover : MonoBehaviour
 		m_Rigidbody.MoveRotation (m_Rigidbody.rotation * turnRotation);
 		// m_CameraTarget.MoveRotation (cameraRotation); // Doesn't work like I hoped.
 		
+	}
+
+	void SetTrail ()
+	{
+		if (Mathf.Abs(m_CurrentSpeed) > m_TrailThreshold)
+		{
+			m_Trail.gameObject.SetActive(true);
+		}
+		else
+		{
+			m_Trail.gameObject.SetActive(false);
+		}
 	}
 }
