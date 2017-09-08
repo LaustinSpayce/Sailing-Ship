@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaterSprayCollider : MonoBehaviour {
+public class WaterSprayCollider : MonoBehaviour
+{
 
 	public Rigidbody m_SprayCube;
 	public float m_SprayHeight = 9.0f;
@@ -10,6 +11,7 @@ public class WaterSprayCollider : MonoBehaviour {
 	public float m_SprayTime = 2.0f;
 	public ParticleSystem m_SprayParticles;
 	public float m_SprayParticlesMax = 15.0f;
+	public float m_PlatformTolerance = 0.1f;
 
 	[FMODUnity.EventRef]
 	public string m_WaterSpraySound = "WaterSpraySoundEvent";
@@ -50,7 +52,7 @@ public class WaterSprayCollider : MonoBehaviour {
 
 	private IEnumerator SprayRise ()
 	{
-		while (Vector3.Distance(m_SprayCube.position, m_CubeEndPosition) > 0.1)
+		while (Vector3.Distance(m_SprayCube.position, m_CubeEndPosition) > m_PlatformTolerance)
 		{
 			Vector3 targetPosition = Vector3.Lerp(m_SprayCube.position, m_CubeEndPosition, m_SpraySpeed * Time.deltaTime);
 			m_SprayParticles.startSpeed = Mathf.Lerp(m_SprayParticles.startSpeed, m_SprayParticlesMax, m_SpraySpeed * Time.deltaTime);
@@ -68,7 +70,7 @@ public class WaterSprayCollider : MonoBehaviour {
 	private IEnumerator SprayFall ()
 	{
 		Debug.Log("Spray Falling");
-		while (Vector3.Distance(m_SprayCube.position, m_CubeStartPosition) > 0.1)
+		while (Vector3.Distance(m_SprayCube.position, m_CubeStartPosition) > m_PlatformTolerance)
 		{
 			Vector3 targetPosition = Vector3.Lerp(m_SprayCube.position, m_CubeStartPosition, m_SpraySpeed * Time.deltaTime);
 			m_SprayParticles.startSpeed = Mathf.Lerp(m_SprayParticles.startSpeed, 0.0f, m_SpraySpeed * Time.deltaTime);
