@@ -66,7 +66,7 @@ public class CannonShoot : MonoBehaviour
 			else if (!m_Port) // If not Port it's gotta be Starboard.
 				Fire(m_CannonStarboardTransform);
 		}
-		else if (Input.GetButtonDown("Fire1") && m_ReadyToCharge)
+		else if (Input.GetButtonDown("Fire1") && m_ReadyToCharge && !GameManager.m_Instance.m_Paused)
 		{
 			m_Fired = false;
 			m_Charging = true;

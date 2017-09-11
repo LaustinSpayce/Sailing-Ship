@@ -9,9 +9,24 @@ public class GameManager : MonoBehaviour
 	public Text m_ScoreText;
 	public Rigidbody m_Gate;
 	public GameObject m_PausePanel;
+	public float m_Gatedrop = 8.0f;
+	public float m_GateSpeed = 1.0f;
+	public SoundManager m_SoundManager;
+
+	private Vector3 m_GateStartPosition;
+	private Vector3 m_GateEndPosition;
+	private bool m_GateMoving = false;
+	private float m_PlatformTolerance = 0.1f;
+
+	[FMODUnity.EventRef]
+	public string m_GateMovingSound = "GateSoundEvent";
+	[FMODUnity.EventRef]
+	public string m_ScoreSound = "ScoreSound";
+	[FMODUnity.EventRef]
+	public string m_WinnerSound = "WinnerSound";
 
 	private int m_Score = 0;
-	private bool m_Paused = false;
+	public bool m_Paused = false;
 
 	private void Awake()
 	{
@@ -23,9 +38,10 @@ public class GameManager : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-		// if (m_PausePanel != null){
-		// 	m_PausePanel = GameObject.Find("PausePanel");
-		// }
+
+		m_GateStartPosition = m_Gate.position;
+		m_GateEndPosition = m_Gate.position + (Vector3.down * m_Gatedrop);
+
 	}
 
 	private void Start ()
@@ -85,15 +101,31 @@ public class GameManager : MonoBehaviour
 		m_Paused = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
+		SoundManager.m_SoundManager.CommitVolumeSettings();
 	}
 
 	private void OpenGate()
 	{
+		if (!m_GateMoving)
+		{
+			m_GateMoving = true;
+			StartCoroutine(GateOpen());
+		}
+	}
 
+	private IEnumerator GateOpen()
+	{
+		while (Vector3.Distance(m_Gate.position, m_GateEndPosition) > m_PlatformTolerance)
+		{
+			Vector3 targetPosition = Vector3.Lerp(m_Gate.position, m_GateEndPosition, m_GateSpeed * Time.deltaTime);
+			m_Gate.MovePosition(targetPosition);
+			yield return null;
+		}		
 	}
 
 	public void QuitGame()
 	{
 		Application.Quit();
 	}
+
 }
