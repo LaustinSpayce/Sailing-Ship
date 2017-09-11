@@ -30,13 +30,7 @@ public class BoatMover : MonoBehaviour
 		m_CurrentSpeed = 0.0f;
 		m_Trail.gameObject.SetActive(false);
 	}
-
-	void Start () 
-	{
-		
-	}
 	
-	// Update is called once per frame
 	void Update () 
 	{
 		GetTargetSpeed();
@@ -48,7 +42,6 @@ public class BoatMover : MonoBehaviour
 	// Move the boat forward
 	void MoveBoat ()
 	{
-		// m_CurrentSpeed = Mathf.Lerp(m_CurrentSpeed, m_TargetSpeed, m_BoatAcceleration * Time.deltaTime);
 		if (m_CurrentSpeed >= m_TargetSpeed)
 		{
 			m_CurrentSpeed -= m_BoatAcceleration * Time.deltaTime;

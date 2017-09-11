@@ -23,6 +23,9 @@ public class CannonShoot : MonoBehaviour
 	public float m_MaxDelay = 0.25f; // Maximum delay from releasing the fire button until the cannon goes bang.
 	public float m_CrewCompetence = 0.5f; // Multiplier for the max angle deviance. 1 is incompetent, 0 is perfect.
 	public float m_MaxAngleDeviance = 15f; // Maximum angle, in degrees, in a cone around the cannon's direction.
+	public bool m_isNPC = false; // normally not an NPC. Change to true if you are.
+	public Transform m_Player; // The player
+	public float m_MinimumDistanceToShoot;
 	
 	// Now for FMOD and Sound stuff
 	[FMODUnity.EventRef]
@@ -48,17 +51,19 @@ public class CannonShoot : MonoBehaviour
 		m_ShotSpeed = m_MinShotSpeed;
 
 		m_ChargeSpeed = (m_MaxShotSpeed - m_MinShotSpeed) / m_MaxChargeTime;
-
-		m_AimPortSlider.value = m_MinShotSpeed;
-		m_AimStarboardSlider.value = m_MinShotSpeed;
-		m_CannonRechargeSlider.value = m_FiringDelay;
-		m_CannonReadyImage.gameObject.SetActive(true);
+		if(!m_isNPC)
+		{
+			m_AimPortSlider.value = m_MinShotSpeed;
+			m_AimStarboardSlider.value = m_MinShotSpeed;
+			m_CannonRechargeSlider.value = m_FiringDelay;
+			m_CannonReadyImage.gameObject.SetActive(true);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if (m_ShotSpeed >= m_MaxShotSpeed && !m_Fired) //When the charge reaches maximum, fire anyway.
+		if (m_ShotSpeed >= m_MaxShotSpeed && !m_Fired && !m_isNPC) //When the charge reaches maximum, fire anyway.
 		{
 			m_ShotSpeed = m_MaxShotSpeed;
 			if (m_Port) // Was the camera facing port?
@@ -66,7 +71,7 @@ public class CannonShoot : MonoBehaviour
 			else if (!m_Port) // If not Port it's gotta be Starboard.
 				Fire(m_CannonStarboardTransform);
 		}
-		else if (Input.GetButtonDown("Fire1") && m_ReadyToCharge && !GameManager.m_Instance.m_Paused)
+		else if (Input.GetButtonDown("Fire1") && m_ReadyToCharge && !GameManager.m_Instance.m_Paused && !m_isNPC)
 		{
 			m_Fired = false;
 			m_Charging = true;
@@ -85,19 +90,19 @@ public class CannonShoot : MonoBehaviour
 				m_ActiveSlider = m_AimStarboardSlider;
 			}
 		}
-		else if (Input.GetButton ("Fire1") && !m_Fired)
+		else if (Input.GetButton ("Fire1") && !m_Fired && !m_isNPC)
         {
             // Increment the launch force.
             m_ShotSpeed += m_ChargeSpeed * Time.deltaTime;
 			// Update UI.
 			m_ActiveSlider.value = m_ShotSpeed;
 		}
-		else if (Input.GetButtonDown("Fire1") && !m_ReadyToCharge)
+		else if (Input.GetButtonDown("Fire1") && !m_ReadyToCharge && !m_isNPC)
 		{
-			Debug.Log("Not Ready to Fire!");
+			// Debug.Log("Not Ready to Fire!");
 			// Play an error sound.
 		}
-		else if (Input.GetButtonUp("Fire1") && m_Charging)
+		else if (Input.GetButtonUp("Fire1") && m_Charging && !m_isNPC)
 		{
 			if (m_Port)
 				Fire(m_CannonPortTransform);
@@ -108,14 +113,38 @@ public class CannonShoot : MonoBehaviour
 		if (!m_ReadyToCharge)
 		{
 			m_TimeSinceLastShot += Time.deltaTime;
+			if (!m_isNPC)
+			{
 			m_CannonRechargeSlider.value = m_TimeSinceLastShot;
+			}
 		}
 
 		if (m_TimeSinceLastShot >= m_FiringDelay)
 		{
 			m_ReadyToCharge = true;
+			if (!m_isNPC)
+			{
 			m_CannonRechargeSlider.value = m_FiringDelay;
 			m_CannonReadyImage.gameObject.SetActive(true);
+			}
+		}
+
+		var distanceToPlayer = Vector3.Distance(this.transform.position, m_Player.position);
+
+		if (m_isNPC && m_ReadyToCharge && distanceToPlayer < m_MinimumDistanceToShoot)
+		{
+			var playerAngle = Vector3.SignedAngle(this.transform.forward, m_Player.position - this.transform.position, Vector3.up);
+			var NPCShotPower = Random.Range(m_MinShotSpeed, m_MaxShotSpeed);
+			if (playerAngle < 0.0f)
+			{
+				m_Port = true;
+				Fire(m_CannonPortTransform);
+			}
+			else
+			{
+				m_Port = false;
+				Fire(m_CannonStarboardTransform);
+			}
 		}
 	}
 
@@ -123,11 +152,14 @@ public class CannonShoot : MonoBehaviour
 	{
 		m_Fired = true;
 		m_TimeSinceLastShot = 0.0f;
-		m_CannonRechargeSlider.value = m_TimeSinceLastShot;
 		m_Charging = false;
 		m_ReadyToCharge = false;
-		m_ActiveSlider.value = m_MinShotSpeed;
-		m_CannonReadyImage.gameObject.SetActive(false);
+		if (!m_isNPC)
+		{		
+			m_CannonRechargeSlider.value = m_TimeSinceLastShot;
+			m_ActiveSlider.value = m_MinShotSpeed;
+			m_CannonReadyImage.gameObject.SetActive(false);
+		}
 		for (int i = 0; i < cannonArray.Length; i++)
 		{
 		StartCoroutine(CannonBoom(cannonArray[i]));

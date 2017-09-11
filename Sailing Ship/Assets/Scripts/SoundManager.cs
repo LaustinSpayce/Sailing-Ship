@@ -5,38 +5,38 @@ using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour {
 
-	public FMOD.Studio.Bus m_SfxBus;
-	public FMOD.Studio.Bus m_MusicBus;
+
 	public Slider m_SfxSlider;
 	public Slider m_MusicSlider;
-	public static SoundManager m_SoundManager;
+	public static SoundManager s_SoundManager;
 
 	[FMODUnity.EventRef]
     public string m_Music = "event:/Tune";
 
-	private float SFXVolume;
-	private float MusicVolume;
-	FMOD.Studio.EventInstance m_MusicEv;
+	private float m_SFXVolume;
+	private float m_MusicVolume;
+	private FMOD.Studio.EventInstance m_MusicEvent;
+	private FMOD.Studio.Bus m_SfxBus;
+	private FMOD.Studio.Bus m_MusicBus;
 
 	void Start () 
 	{
-		if (m_SoundManager != null)
+		if (s_SoundManager != null)
 		{
 			Destroy(this);
 			return;
 		}
-		m_SoundManager = this;
+		s_SoundManager = this;
 		m_SfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
 		m_MusicBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");
-		float SFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1);
-		float MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1);
-		m_SfxBus.setVolume(SFXVolume);
-		m_MusicBus.setVolume(MusicVolume);
-		m_SfxSlider.value = SFXVolume;
-		m_MusicSlider.value = MusicVolume;
-		Debug.Log(SFXVolume);
-		m_MusicEv = FMODUnity.RuntimeManager.CreateInstance(m_Music);
-		m_MusicEv.start();
+		m_SFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1);
+		m_MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1);
+		m_SfxBus.setVolume(m_SFXVolume);
+		m_MusicBus.setVolume(m_MusicVolume);
+		m_SfxSlider.value = m_SFXVolume;
+		m_MusicSlider.value = m_MusicVolume;
+		m_MusicEvent = FMODUnity.RuntimeManager.CreateInstance(m_Music);
+		MusicPlaybackState();
 	}
 	
 	void Update () {
@@ -45,33 +45,33 @@ public class SoundManager : MonoBehaviour {
 
 	public void UpdateVolumeSettings ()
 	{
-		float SFXVolume = m_SfxSlider.value;
-		float MusicVolume = m_MusicSlider.value;
-		m_SfxBus.setVolume(SFXVolume);
-		m_MusicBus.setVolume(MusicVolume);
+		m_SFXVolume = m_SfxSlider.value;
+		m_MusicVolume = m_MusicSlider.value;
+		m_SfxBus.setVolume(m_SFXVolume);
+		m_MusicBus.setVolume(m_MusicVolume);
+		MusicPlaybackState();
 	}
 
 	public void MusicPlaybackState ()
 	{
 		FMOD.Studio.PLAYBACK_STATE play_state;
-		m_MusicEv.getPlaybackState(out play_state);
-		if (MusicVolume == 0.0f)
+		m_MusicEvent.getPlaybackState(out play_state);
+		if (m_MusicVolume == 0.0f)
 		{
-			m_MusicEv.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+			m_MusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 		}
-		else if (MusicVolume > 0.0f && play_state != FMOD.Studio.PLAYBACK_STATE.PLAYING)
+		else if (m_MusicVolume > 0.0f && play_state != FMOD.Studio.PLAYBACK_STATE.PLAYING)
 		{
-			m_MusicEv.start();
+			m_MusicEvent.start();
 		}
 	}
 
 	public void CommitVolumeSettings ()
 	{
-		SFXVolume = m_SfxSlider.value;
-		MusicVolume = m_MusicSlider.value;
-		PlayerPrefs.SetFloat("SFXVolume", SFXVolume);
-		PlayerPrefs.SetFloat("MusicVolume", MusicVolume);
-		Debug.Log(SFXVolume);
-		// Debug.Log("Committing Volume Settings");
+		m_SFXVolume = m_SfxSlider.value;
+		m_MusicVolume = m_MusicSlider.value;
+		PlayerPrefs.SetFloat("SFXVolume", m_SFXVolume);
+		PlayerPrefs.SetFloat("MusicVolume", m_MusicVolume);
+		MusicPlaybackState();
 	}
 }

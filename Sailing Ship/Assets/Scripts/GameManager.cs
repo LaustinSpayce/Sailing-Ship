@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
 		m_Paused = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		SoundManager.m_SoundManager.CommitVolumeSettings();
+		m_SoundManager.CommitVolumeSettings();
 	}
 
 	private void OpenGate()
