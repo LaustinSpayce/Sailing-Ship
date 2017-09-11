@@ -4,16 +4,42 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-
+	public LayerMask m_ShipMask; // Set to "Players"
 	public float m_CannonBallLifeTime = 5.0f;
+	public float m_CannonBallDamageDealt = 5.0f;
+	public GameObject m_Explosion;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		Destroy(this.gameObject, m_CannonBallLifeTime);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	private void OnDestroy ()
+	{
 		
 	}
+
+	private void OnTriggerEnter (Collider other)
+	{
+		if (other.tag == "Player")
+		{
+			Destroy(this.gameObject);
+			Rigidbody targetRigidbody = other.GetComponent<Rigidbody>();
+			if (!targetRigidbody)
+			{
+				return;
+			}
+			BoatHealth targetHealth = targetRigidbody.GetComponent<BoatHealth> ();
+			if (!targetHealth)
+			{
+				return;
+			}
+			targetHealth.TakeDamage(m_CannonBallDamageDealt);
+			Instantiate<GameObject>(m_Explosion, this.transform.position, Quaternion.identity);
+		}
+	}
+	
+
+		
 }

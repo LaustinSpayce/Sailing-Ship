@@ -37,6 +37,7 @@ public class SoundManager : MonoBehaviour {
 		m_MusicSlider.value = m_MusicVolume;
 		m_MusicEvent = FMODUnity.RuntimeManager.CreateInstance(m_Music);
 		MusicPlaybackState();
+		DontDestroyOnLoad(transform.gameObject);
 	}
 	
 	void Update () {

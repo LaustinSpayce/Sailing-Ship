@@ -110,7 +110,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9cbd0b9ce5940408043be9dd47c45a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ShipMask:
+    serializedVersion: 2
+    m_Bits: 256
   m_CannonBallLifeTime: 5
+  m_CannonBallDamageDealt: 5
+  m_Explosion: {fileID: 1952889877937386, guid: aaa010afee778b84eb33338a51a6d8fc,
+    type: 2}
 --- !u!135 &135213709654547700
 SphereCollider:
   m_ObjectHideFlags: 1

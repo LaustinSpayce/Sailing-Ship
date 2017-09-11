@@ -133,8 +133,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1394283189236474}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7, z: 7}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -4.005722, y: 1.4920878, z: 10.561348}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4911887120438020}
@@ -143,7 +143,7 @@ Transform:
   - {fileID: 4169332869053984}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!4 &4534112149972380
 Transform:
   m_ObjectHideFlags: 1
@@ -412,3 +412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff3071a8bbbbd3e4b9b2dd7cc01897e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_BreakSound: Break Sound
+  m_Explosion: {fileID: 1952889877937386, guid: aaa010afee778b84eb33338a51a6d8fc,
+    type: 2}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour 
 {
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
 	public float m_Gatedrop = 8.0f;
 	public float m_GateSpeed = 1.0f;
 	public SoundManager m_SoundManager;
+	public GameObject[] m_EnemyShips;
 
 	private Vector3 m_GateStartPosition;
 	private Vector3 m_GateEndPosition;
@@ -38,10 +40,8 @@ public class GameManager : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-
 		m_GateStartPosition = m_Gate.position;
 		m_GateEndPosition = m_Gate.position + (Vector3.down * m_Gatedrop);
-
 	}
 
 	private void Start ()
@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
 		if (m_Score >= 4)
 		{
 			OpenGate();
+			SpawnEnemies();
 		}
 	}
 
@@ -104,6 +105,11 @@ public class GameManager : MonoBehaviour
 		m_SoundManager.CommitVolumeSettings();
 	}
 
+	public static void GameOver()
+	{
+		SceneManager.LoadScene("MainScene");
+	}
+
 	private void OpenGate()
 	{
 		if (!m_GateMoving)
@@ -121,6 +127,14 @@ public class GameManager : MonoBehaviour
 			m_Gate.MovePosition(targetPosition);
 			yield return null;
 		}		
+	}
+
+	private void SpawnEnemies ()
+	{
+		for (int i = 0; i < m_EnemyShips.Length; i++)
+		{
+			m_EnemyShips[i].SetActive(true);
+		}
 	}
 
 	public void QuitGame()
