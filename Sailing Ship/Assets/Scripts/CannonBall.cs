@@ -8,6 +8,8 @@ public class CannonBall : MonoBehaviour
 	public float m_CannonBallLifeTime = 5.0f;
 	public float m_CannonBallDamageDealt = 5.0f;
 	public GameObject m_Explosion;
+	[FMODUnity.EventRef]
+	public string m_FMODHitShipRef = "event:/Player Actions/Ship Hit";
 
 	// Use this for initialization
 	void Start ()
@@ -37,6 +39,7 @@ public class CannonBall : MonoBehaviour
 			}
 			targetHealth.TakeDamage(m_CannonBallDamageDealt);
 			Instantiate<GameObject>(m_Explosion, this.transform.position, Quaternion.identity);
+			FMODUnity.RuntimeManager.PlayOneShot(m_FMODHitShipRef, this.gameObject.transform.position);
 		}
 	}
 	

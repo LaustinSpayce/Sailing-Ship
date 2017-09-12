@@ -412,6 +412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff3071a8bbbbd3e4b9b2dd7cc01897e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BreakSound: Break Sound
+  m_BreakSound: event:/Player Actions/Sign Hit
   m_Explosion: {fileID: 1952889877937386, guid: aaa010afee778b84eb33338a51a6d8fc,
     type: 2}
