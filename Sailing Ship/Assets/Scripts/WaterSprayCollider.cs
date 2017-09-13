@@ -13,12 +13,10 @@ public class WaterSprayCollider : MonoBehaviour
 	public float m_SprayParticlesMax = 15.0f;
 	public float m_PlatformTolerance = 0.1f;
 
-	[FMODUnity.EventRef]
-	public string m_WaterSpraySound = "WaterSpraySoundEvent";
-
 	private bool m_IsSpraying = false;
 	private Vector3 m_CubeStartPosition;
 	private Vector3 m_CubeEndPosition;
+	private FMODUnity.StudioEventEmitter m_WaterSpraySound;
 
 
 	void Start () {
@@ -27,6 +25,7 @@ public class WaterSprayCollider : MonoBehaviour
 		m_CubeEndPosition = m_SprayCube.position + (Vector3.up * m_SprayHeight);
 		m_SprayCube.MovePosition(m_SprayCube.position);
 		m_SprayParticles.Stop();
+		m_WaterSpraySound = m_SprayCube.GetComponent<FMODUnity.StudioEventEmitter>();
 	}
 
 	void OnCollisionEnter (Collision Collider)
@@ -44,6 +43,7 @@ public class WaterSprayCollider : MonoBehaviour
 
 	private IEnumerator SprayRoutine ()
 	{
+		m_WaterSpraySound.Play();
 		yield return StartCoroutine (SprayRise());
 		yield return StartCoroutine (SprayStay());
 		yield return StartCoroutine (SprayFall());

@@ -14,14 +14,15 @@ public class GameManager : MonoBehaviour
 	public float m_GateSpeed = 1.0f;
 	public SoundManager m_SoundManager;
 	public GameObject[] m_EnemyShips;
+	public int m_Threshold;
 
 	private Vector3 m_GateStartPosition;
 	private Vector3 m_GateEndPosition;
 	private bool m_GateMoving = false;
 	private float m_PlatformTolerance = 0.1f;
 
-	[FMODUnity.EventRef]
-	public string m_GateMovingSound = "GateSoundEvent";
+	// [FMODUnity.EventRef]
+	// public string m_GateMovingSound = "event:/Player Actions/Gate Open";
 	[FMODUnity.EventRef]
 	public string m_ScoreSound = "ScoreSound";
 	[FMODUnity.EventRef]
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
 
 	private int m_Score = 0;
 	public bool m_Paused = false;
+
+	private FMODUnity.StudioEventEmitter m_GateEmitter;
 
 	private void Awake()
 	{
@@ -42,6 +45,7 @@ public class GameManager : MonoBehaviour
 		}
 		m_GateStartPosition = m_Gate.position;
 		m_GateEndPosition = m_Gate.position + (Vector3.down * m_Gatedrop);
+		m_GateEmitter = m_Gate.GetComponent<FMODUnity.StudioEventEmitter>();
 	}
 
 	private void Start ()
@@ -67,7 +71,7 @@ public class GameManager : MonoBehaviour
 	private void UpdateScore()
 	{
 		m_ScoreText.text = "Score: " + m_Score;
-		if (m_Score >= 4)
+		if (m_Score >= m_Threshold)
 		{
 			OpenGate();
 			SpawnEnemies();
@@ -114,6 +118,7 @@ public class GameManager : MonoBehaviour
 	{
 		if (!m_GateMoving)
 		{
+			Debug.Log("Gate Dropping");
 			m_GateMoving = true;
 			StartCoroutine(GateOpen());
 		}
@@ -121,12 +126,16 @@ public class GameManager : MonoBehaviour
 
 	private IEnumerator GateOpen()
 	{
+		m_GateEmitter.Play();
+		m_GateEmitter.SetParameter("gateFinish", 0.0f);
 		while (Vector3.Distance(m_Gate.position, m_GateEndPosition) > m_PlatformTolerance)
 		{
-			Vector3 targetPosition = Vector3.Lerp(m_Gate.position, m_GateEndPosition, m_GateSpeed * Time.deltaTime);
+			Vector3 targetPosition = m_Gate.position + Vector3.down * m_GateSpeed * Time.deltaTime;
 			m_Gate.MovePosition(targetPosition);
 			yield return null;
 		}		
+		m_GateEmitter.SetParameter("gateFinish", 1.0f);
+		Debug.Log("Gate Finished");
 	}
 
 	private void SpawnEnemies ()
