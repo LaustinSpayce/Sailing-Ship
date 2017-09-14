@@ -3720,6 +3720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StartingHealth: 100
   m_HealthSlider: {fileID: 0}
+  m_DeadBoat: {fileID: 1576531624332708, guid: b3d304d7ca53e224db63f3ab226b01ab, type: 2}
   m_ShipDeathSound: event:/Player Actions/Ship Death
 --- !u!114 &114266973210040658
 MonoBehaviour:

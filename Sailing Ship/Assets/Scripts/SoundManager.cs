@@ -8,10 +8,12 @@ public class SoundManager : MonoBehaviour {
 
 	public Slider m_SfxSlider;
 	public Slider m_MusicSlider;
+	[SerializeField]
 	public static SoundManager s_SoundManager;
 
 	[FMODUnity.EventRef]
-    public string m_Music = "event:/Tune";
+    public string m_Music = "event:/Music/Music Track";
+
 
 	private float m_SFXVolume;
 	private float m_MusicVolume;
@@ -37,7 +39,8 @@ public class SoundManager : MonoBehaviour {
 		m_MusicSlider.value = m_MusicVolume;
 		m_MusicEvent = FMODUnity.RuntimeManager.CreateInstance(m_Music);
 		MusicPlaybackState();
-		DontDestroyOnLoad(transform.gameObject);
+		DontDestroyOnLoad(this.gameObject);
+		m_MusicEvent.setParameterValue("targetsLeft", 10);
 	}
 	
 	void Update () {
@@ -74,5 +77,11 @@ public class SoundManager : MonoBehaviour {
 		PlayerPrefs.SetFloat("SFXVolume", m_SFXVolume);
 		PlayerPrefs.SetFloat("MusicVolume", m_MusicVolume);
 		MusicPlaybackState();
+	}
+
+	public void SetMusicTargetsLeft(int targetsLeft)
+	{
+		m_MusicEvent.setParameterValue("targetsLeft", targetsLeft);
+		Debug.Log(targetsLeft);
 	}
 }

@@ -7,6 +7,7 @@ public class BoatHealth : MonoBehaviour {
 
 	public float m_StartingHealth = 100f;
 	public Slider m_HealthSlider;
+	public GameObject m_DeadBoat;
 
 	[FMODUnity.EventRef]
 	public string m_ShipDeathSound = "event:/Player Actions/Ship Death";
@@ -14,7 +15,6 @@ public class BoatHealth : MonoBehaviour {
 	private float m_CurrentHealth;
 	private bool m_Dead;
 	private CannonShoot m_CannonShoot;
-
 
 	// Use this for initialization
 	void OnEnable () {
@@ -46,9 +46,10 @@ public class BoatHealth : MonoBehaviour {
 		// Do some sinking animation or something
 		m_Dead = true;
 		Destroy(this.gameObject);
+		GameObject deadBoat = Instantiate(m_DeadBoat, transform.position, transform.rotation);
 		if (!m_CannonShoot.m_isNPC)
 		{
-			GameManager.GameOver();
+			GameManager.m_Instance.GameOver();
 		}
 	}
 
