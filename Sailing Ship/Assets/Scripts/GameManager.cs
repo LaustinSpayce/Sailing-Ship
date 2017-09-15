@@ -128,7 +128,6 @@ public class GameManager : MonoBehaviour
 	public void GameOver()
 	{
 		m_GameOverScreen.SetActive(true);
-		// SceneManager.LoadScene("MainScene");
 	}
 
 	private void OpenGate()
@@ -170,6 +169,7 @@ public class GameManager : MonoBehaviour
 
 	public void RestartLevel()
 	{
+		SoundManager.s_SoundManager.StopMusic();
 		SceneManager.LoadScene("MainScene");
 	}
 

@@ -39,7 +39,6 @@ public class SoundManager : MonoBehaviour {
 		m_MusicSlider.value = m_MusicVolume;
 		m_MusicEvent = FMODUnity.RuntimeManager.CreateInstance(m_Music);
 		MusicPlaybackState();
-		DontDestroyOnLoad(this.gameObject);
 		m_MusicEvent.setParameterValue("targetsLeft", 10);
 	}
 	
@@ -59,6 +58,10 @@ public class SoundManager : MonoBehaviour {
 	public void MusicPlaybackState ()
 	{
 		FMOD.Studio.PLAYBACK_STATE play_state;
+		if (m_MusicEvent == null)
+		{
+			m_MusicEvent = FMODUnity.RuntimeManager.CreateInstance(m_Music);
+		}
 		m_MusicEvent.getPlaybackState(out play_state);
 		if (m_MusicVolume == 0.0f)
 		{
@@ -83,5 +86,10 @@ public class SoundManager : MonoBehaviour {
 	{
 		m_MusicEvent.setParameterValue("targetsLeft", targetsLeft);
 		Debug.Log(targetsLeft);
+	}
+
+	public void StopMusic()
+	{
+		m_MusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 	}
 }

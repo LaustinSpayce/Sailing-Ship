@@ -44,6 +44,8 @@ public class CannonShoot : MonoBehaviour
 	private float m_ChargeSpeed;
 	private float m_CameraAngle;
 	private Slider m_ActiveSlider; // Switch between port and starboard once
+	private FMOD.Studio.EventInstance m_ChargeSoundEvent;
+	private Rigidbody m_BoatRigidBody;
 
 	// Use this for initialization
 	void Start () 
@@ -57,9 +59,11 @@ public class CannonShoot : MonoBehaviour
 			m_AimStarboardSlider.value = m_MinShotSpeed;
 			m_CannonRechargeSlider.value = m_FiringDelay;
 			m_CannonReadyImage.gameObject.SetActive(true);
+			m_ChargeSoundEvent = FMODUnity.RuntimeManager.CreateInstance(m_ChargeSound);
+			FMODUnity.RuntimeManager.AttachInstanceToGameObject(m_ChargeSoundEvent, this.transform, m_BoatRigidBody);
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -77,7 +81,7 @@ public class CannonShoot : MonoBehaviour
 			m_Charging = true;
 			m_ShotSpeed = m_MinShotSpeed;		
 			// Add charging sound
-
+			m_ChargeSoundEvent.start();
 			// We decide wether to fire port or starboard right now.
 			var cameraAngle = m_CameraBase.GetComponent<CameraManager>().m_AngleFromFront; // Get the Camera Angle from the Camera Manager Script
 			if (cameraAngle < 0.0f) // Determine wether it's going to be port or starboard (port is negative degrees)
@@ -99,8 +103,10 @@ public class CannonShoot : MonoBehaviour
 		}
 		else if (Input.GetButtonDown("Fire1") && !m_ReadyToCharge && !m_isNPC)
 		{
-			// Debug.Log("Not Ready to Fire!");
-			// Play an error sound.
+			if (!GameManager.m_Instance.m_Paused)
+			{
+				FMODUnity.RuntimeManager.PlayOneShot (m_ErrorSound, transform.position);
+			}
 		}
 		else if (Input.GetButtonUp("Fire1") && m_Charging && !m_isNPC)
 		{
@@ -156,6 +162,7 @@ public class CannonShoot : MonoBehaviour
 		m_ReadyToCharge = false;
 		if (!m_isNPC)
 		{		
+			StopChargeSound();
 			m_CannonRechargeSlider.value = m_TimeSinceLastShot;
 			m_ActiveSlider.value = m_MinShotSpeed;
 			m_CannonReadyImage.gameObject.SetActive(false);
@@ -177,5 +184,10 @@ public class CannonShoot : MonoBehaviour
 		cannonInstance.velocity = m_ShotSpeed * cannonBallDirection.forward;
 		FMODUnity.RuntimeManager.PlayOneShot (m_CannonSound, cannonTransform.position);
 		cannonTransform.transform.GetComponent<ParticleSystem>().Play();
+	}
+
+	private void StopChargeSound ()
+	{
+		m_ChargeSoundEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 	}
 }

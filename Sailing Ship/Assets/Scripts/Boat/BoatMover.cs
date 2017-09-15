@@ -16,11 +16,15 @@ public class BoatMover : MonoBehaviour
 	public float m_BoatAcceleration = 0.1f;
 	public TrailRenderer m_Trail;
 	public float m_TrailThreshold;
-
+	
+	// private FMODUnity.StudioEventEmitter m_BoatSoundEmitter;
 	private Rigidbody m_Rigidbody; // rigidbody for the boat.
-	private float m_CurrentSpeed; // current speed of the boat.
+	[HideInInspector]
+	public float m_CurrentSpeed; // current speed of the boat.
 	private float m_TargetSpeed; // Target Speed of boat.
 	private Rigidbody m_CameraTarget;
+	// private FMOD.Studio.ParameterInstance m_BoatSpeedSound;
+	private float speedRatio;
 
 	void Awake ()
 	{
@@ -30,6 +34,12 @@ public class BoatMover : MonoBehaviour
 		m_CurrentSpeed = 0.0f;
 		m_Trail.gameObject.SetActive(false);
 	}
+
+	void Start ()
+	{
+		// m_BoatSoundEmitter = GetComponent<FMODUnity.StudioEventEmitter>();
+		// m_BoatSoundEmitter.SetParameter("speed", 0.0f);
+	}
 	
 	void Update () 
 	{
@@ -37,6 +47,7 @@ public class BoatMover : MonoBehaviour
 		MoveBoat();
 		TurnBoat();
 		SetTrail();
+		// SetSound();
 	}
 
 	// Move the boat forward
@@ -100,4 +111,10 @@ public class BoatMover : MonoBehaviour
 			m_Trail.gameObject.SetActive(false);
 		}
 	}
+
+	// void SetSound()
+	// {
+	// 	speedRatio = m_CurrentSpeed / m_MaxSpeed;
+	// 	m_BoatSoundEmitter.SetParameter("boatSpeed", speedRatio);
+	// }
 }

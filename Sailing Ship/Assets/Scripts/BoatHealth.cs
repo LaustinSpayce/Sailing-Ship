@@ -43,10 +43,9 @@ public class BoatHealth : MonoBehaviour {
 
 	private void OnDeath()
 	{
-		// Do some sinking animation or something
 		m_Dead = true;
 		Destroy(this.gameObject);
-		GameObject deadBoat = Instantiate(m_DeadBoat, transform.position, transform.rotation);
+		GameObject deadBoat = Instantiate(m_DeadBoat, this.transform.position, this.transform.rotation);
 		if (!m_CannonShoot.m_isNPC)
 		{
 			GameManager.m_Instance.GameOver();
