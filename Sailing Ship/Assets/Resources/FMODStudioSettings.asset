@@ -17,7 +17,7 @@ MonoBehaviour:
   SourceProjectPathUnformatted: 
   SourceBankPathUnformatted: Assets\FMOD Banks
   AutomaticEventLoading: 1
-  AutomaticSampleLoading: 1
+  AutomaticSampleLoading: 0
   ImportType: 0
   TargetAssetPath: 
   SpeakerModeSettings:
@@ -33,7 +33,7 @@ MonoBehaviour:
     Value: 0
   OverlaySettings:
   - Platform: 1
-    Value: 1
+    Value: 0
   - Platform: 2
     Value: 0
   LoggingSettings:

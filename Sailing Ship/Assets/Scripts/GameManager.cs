@@ -121,20 +121,21 @@ public class GameManager : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		SoundManager.s_SoundManager.CommitVolumeSettings();
-		m_MenuSnapShotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-		
+		m_MenuSnapShotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);		
 	}
 
 	public void GameOver()
 	{
 		m_GameOverScreen.SetActive(true);
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
 	}
 
 	private void OpenGate()
 	{
 		if (!m_GateMoving)
 		{
-			Debug.Log("Gate Dropping");
+			// Debug.Log("Gate Dropping");
 			m_GateMoving = true;
 			StartCoroutine(GateOpen());
 		}
@@ -151,7 +152,7 @@ public class GameManager : MonoBehaviour
 			yield return null;
 		}		
 		m_GateEmitter.SetParameter("gateFinish", 1.0f);
-		Debug.Log("Gate Finished");
+		// Debug.Log("Gate Finished");
 	}
 
 	private void SpawnEnemies ()
@@ -171,6 +172,7 @@ public class GameManager : MonoBehaviour
 	{
 		SoundManager.s_SoundManager.StopMusic();
 		SceneManager.LoadScene("MainScene");
+		Time.timeScale = 1.0f;
 	}
 
 }
