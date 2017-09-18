@@ -44,8 +44,11 @@ public class BoatHealth : MonoBehaviour {
 	private void OnDeath()
 	{
 		m_Dead = true;
+		var boatTransform = GetComponent<Transform>();
+		var shipRotation = boatTransform.rotation;
+		var deadBoat = Instantiate(m_DeadBoat, this.gameObject.transform.position, shipRotation) as GameObject;
+		// deadBoat.transform.rotation = shipRotation;
 		Destroy(this.gameObject);
-		GameObject deadBoat = Instantiate(m_DeadBoat, this.transform.position, this.transform.rotation);
 		if (!m_CannonShoot.m_isNPC)
 		{
 			GameManager.m_Instance.GameOver();

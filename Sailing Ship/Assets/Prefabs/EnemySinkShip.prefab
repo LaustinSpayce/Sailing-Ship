@@ -87,7 +87,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4541376857665988}
-  - component: {fileID: 114527369807758048}
   m_Layer: 0
   m_Name: EnemyShipModel
   m_TagString: Untagged
@@ -1629,19 +1628,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1606485059937354}
   m_Mesh: {fileID: 4300016, guid: b145870054d5de24da06da86bcb3cba2, type: 3}
---- !u!114 &114527369807758048
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1262005421767126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8db8636e80caee40b76470a12f5fb6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ZDegrees: 0
-  m_ZTime: 0
 --- !u!114 &114657784072187106
 MonoBehaviour:
   m_ObjectHideFlags: 1
