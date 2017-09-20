@@ -21,8 +21,8 @@ namespace FMODUnity
         public float OverrideMaxDistance = -1.0f;
 
         
-        private FMOD.Studio.EventDescription eventDescription = null;
-        private FMOD.Studio.EventInstance instance = null;
+        private FMOD.Studio.EventDescription eventDescription;
+        private FMOD.Studio.EventInstance instance;
         private bool hasTriggered = false;
         private bool isQuitting = false;
 
@@ -38,7 +38,11 @@ namespace FMODUnity
                 eventDescription.getSampleLoadingState(out loadingState);
                 while(loadingState == FMOD.Studio.LOADING_STATE.LOADING)
                 {
+#if WINDOWS_UWP
+                    System.Threading.Tasks.Task.Delay(1).Wait();
+#else
                     System.Threading.Thread.Sleep(1);
+#endif
                     eventDescription.getSampleLoadingState(out loadingState);
                 }
             }
@@ -55,7 +59,7 @@ namespace FMODUnity
             if (!isQuitting)
             {
                 HandleGameEvent(EmitterGameEvent.ObjectDestroy);
-                if (instance != null && instance.isValid())
+                if (instance.isValid())
                 {
                     RuntimeManager.DetachInstanceFromGameObject(instance);
                 }
@@ -158,7 +162,7 @@ namespace FMODUnity
                 return;
             }
 
-            if (eventDescription == null)
+            if (!eventDescription.isValid())
             {
                 Lookup();
             }
@@ -171,19 +175,19 @@ namespace FMODUnity
             bool is3D;
             eventDescription.is3D(out is3D);
 
-            if (instance != null && !instance.isValid())
+            if (!instance.isValid())
             {
-                instance = null;
+                instance.clearHandle();
             }
 
             // Let previous oneshot instances play out
-            if (isOneshot && instance != null)
+            if (isOneshot && instance.isValid())
             {
                 instance.release();
-                instance = null;
+                instance.clearHandle();
             }
 
-            if (instance == null)
+            if (!instance.isValid())
             {
                 eventDescription.createInstance(out instance);
 
@@ -225,47 +229,25 @@ namespace FMODUnity
 
         public void Stop()
         {
-            if (instance != null)
+            if (instance.isValid())
             {
                 instance.stop(AllowFadeout ? FMOD.Studio.STOP_MODE.ALLOWFADEOUT : FMOD.Studio.STOP_MODE.IMMEDIATE);
                 instance.release();
-                instance = null;
+                instance.clearHandle();
             }
         }
         
         public void SetParameter(string name, float value)
         {
-            if (instance != null)
+            if (instance.isValid())
             {
-                instance.setParameterValueByIndex(GetParameterIndex(name), value);
+                instance.setParameterValue(name, value);
             }
-        }
-
-        public void SetParameterValueByIndex(int index, float value)
-        {
-            if (instance != null)
-            {
-                instance.setParameterValueByIndex(index, value);
-            }
-        }
-
-        public int GetParameterIndex(string name)
-        {
-            int index = -1;
-            for (int i = 0; i < Params.Length; i++)
-            {
-                if (Params[i].Name == name)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            return index;
         }
         
         public bool IsPlaying()
         {
-            if (instance != null && instance.isValid())
+            if (instance.isValid() && instance.isValid())
             {
                 FMOD.Studio.PLAYBACK_STATE playbackState;
                 instance.getPlaybackState(out playbackState);

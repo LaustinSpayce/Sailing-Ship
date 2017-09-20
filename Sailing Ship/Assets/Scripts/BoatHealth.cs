@@ -47,6 +47,7 @@ public class BoatHealth : MonoBehaviour {
 		var boatTransform = GetComponent<Transform>();
 		var shipRotation = boatTransform.rotation;
 		var deadBoat = Instantiate(m_DeadBoat, this.gameObject.transform.position, shipRotation) as GameObject;
+		FMODUnity.RuntimeManager.PlayOneShot(m_ShipDeathSound, this.transform.position);
 		// deadBoat.transform.rotation = shipRotation;
 		Destroy(this.gameObject);
 		if (!m_CannonShoot.m_isNPC)

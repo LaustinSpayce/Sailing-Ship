@@ -213,12 +213,12 @@ namespace FMODUnity
             }
 
             // Update the editor system
-            if (system != null && system.isValid())
+            if (system.isValid())
             {
                 CheckResult(system.update());
             }
 
-            if (previewEventInstance != null)
+            if (previewEventInstance.isValid())
             {
                 FMOD.Studio.PLAYBACK_STATE state;
                 previewEventInstance.getPlaybackState(out state);
@@ -233,11 +233,11 @@ namespace FMODUnity
 
         static void DestroySystem()
         {
-            if (system != null)
+            if (system.isValid())
             {
                 UnityEngine.Debug.Log("FMOD Studio: Destroying editor system instance");
                 system.release();
-                system = null;
+                system.clearHandle();
             }
         }
 
@@ -317,7 +317,7 @@ namespace FMODUnity
         {
             get
             {
-                if (system == null)
+                if (!system.isValid())
                 {
                     CreateSystem();
                 }
@@ -375,7 +375,7 @@ namespace FMODUnity
         public static void PreviewEvent(EditorEventRef eventRef)
         {
             bool load = true;
-            if (previewEventDesc != null)
+            if (previewEventDesc.isValid())
             {
                 Guid guid;
                 previewEventDesc.getID(out guid);
@@ -398,7 +398,7 @@ namespace FMODUnity
                 }
                 else
                 {
-                    previewBank = null;
+                    previewBank.clearHandle();
                 }
 
                 CheckResult(System.getEventByID(eventRef.Guid, out previewEventDesc));
@@ -411,7 +411,7 @@ namespace FMODUnity
 
         public static void PreviewUpdateParameter(string paramName, float paramValue)
         {
-            if (previewEventInstance != null)
+			if (previewEventInstance.isValid())
             {
                 CheckResult(previewEventInstance.setParameterValue(paramName, paramValue));
             }
@@ -419,7 +419,7 @@ namespace FMODUnity
 
         public static void PreviewUpdatePosition(float distance, float orientation)
         {
-            if (previewEventInstance != null)
+            if (previewEventInstance.isValid())
             {
                 // Listener at origin
                 FMOD.ATTRIBUTES_3D pos = new FMOD.ATTRIBUTES_3D();
@@ -433,7 +433,7 @@ namespace FMODUnity
 
         public static void PreviewPause()
         {
-            if (previewEventInstance != null)
+            if (previewEventInstance.isValid())
             {
                 bool paused;
                 CheckResult(previewEventInstance.getPaused(out paused));
@@ -444,19 +444,19 @@ namespace FMODUnity
 
         public static void PreviewStop()
         {
-            if (previewEventInstance != null)
+            if (previewEventInstance.isValid())
             {
                 previewEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 previewEventInstance.release();
-                previewEventInstance = null;
-                previewEventDesc = null;
-                if (previewBank != null)
+                previewEventInstance.clearHandle();
+                previewEventDesc.clearHandle();
+                if (previewBank.isValid())
                 {
                     previewBank.unload();
                 }
                 masterBank.unload();
-                masterBank = null;
-                previewBank = null;
+                masterBank.clearHandle();
+                previewBank.clearHandle();
                 previewState = PreviewState.Stopped;
             }
         }
@@ -470,9 +470,8 @@ namespace FMODUnity
             FMOD.DSP masterHead;
             CheckResult(master.getDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, out masterHead));
 
-            FMOD.DSP_METERING_INFO inputMetering = null;
-            FMOD.DSP_METERING_INFO outputMetering = new FMOD.DSP_METERING_INFO();
-            CheckResult(masterHead.getMeteringInfo(inputMetering, outputMetering));
+            FMOD.DSP_METERING_INFO outputMetering;
+            CheckResult(masterHead.getMeteringInfo(IntPtr.Zero, out outputMetering));
 
             FMOD.SPEAKERMODE mode;
             int rate, raw;

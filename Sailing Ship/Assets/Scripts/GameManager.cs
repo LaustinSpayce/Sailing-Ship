@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
 
 	public void DestroyedTarget()
 	{
+		FMODUnity.RuntimeManager.PlayOneShot(m_ScoreSound);
 		m_Score++;
 		UpdateScore();
 	}
@@ -87,7 +88,8 @@ public class GameManager : MonoBehaviour
 		if (m_NumberOfTargets == m_Score)
 		{
 			m_WinText.SetActive(true);
-			Debug.Log("You win!");
+			FMODUnity.RuntimeManager.PlayOneShot(m_WinnerSound);
+			// Debug.Log("You win!");
 		}
 	}
 

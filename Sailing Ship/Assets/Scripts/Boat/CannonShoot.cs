@@ -70,10 +70,10 @@ public class CannonShoot : MonoBehaviour
 		if (m_ShotSpeed >= m_MaxShotSpeed && !m_Fired && !m_isNPC) //When the charge reaches maximum, fire anyway.
 		{
 			m_ShotSpeed = m_MaxShotSpeed;
-			if (m_Port) // Was the camera facing port?
-				Fire(m_CannonPortTransform);
-			else if (!m_Port) // If not Port it's gotta be Starboard.
-				Fire(m_CannonStarboardTransform);
+			// if (m_Port) // Was the camera facing port?
+			// 	Fire(m_CannonPortTransform);
+			// else if (!m_Port) // If not Port it's gotta be Starboard.
+			// 	Fire(m_CannonStarboardTransform);
 		}
 		else if (Input.GetButtonDown("Fire1") && m_ReadyToCharge && !GameManager.m_Instance.m_Paused && !m_isNPC)
 		{
@@ -108,7 +108,8 @@ public class CannonShoot : MonoBehaviour
 				FMODUnity.RuntimeManager.PlayOneShot (m_ErrorSound, transform.position);
 			}
 		}
-		else if (Input.GetButtonUp("Fire1") && m_Charging && !m_isNPC)
+		
+		if (Input.GetButtonUp("Fire1") && m_Charging && !m_isNPC)
 		{
 			if (m_Port)
 				Fire(m_CannonPortTransform);

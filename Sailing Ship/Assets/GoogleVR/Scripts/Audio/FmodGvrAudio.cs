@@ -128,7 +128,7 @@ public static class FmodGvrAudio {
   // Returns the FMOD GVR Listener Plugin.
   private static FMOD.DSP ListenerPlugin {
     get {
-      if (listenerPlugin == null) {
+      if (!listenerPlugin.hasHandle()) {
         listenerPlugin = Initialize();
       }
       return listenerPlugin;
@@ -197,6 +197,7 @@ public static class FmodGvrAudio {
   private static FMOD.DSP Initialize() {
     // Search through all busses on in banks.
     int numBanks = 0;
+    FMOD.DSP dsp = new FMOD.DSP();
     FMOD.Studio.Bank[] banks = null;
     RuntimeManager.StudioSystem.getBankCount(out numBanks);
     RuntimeManager.StudioSystem.getBankList(out banks);
@@ -212,20 +213,19 @@ public static class FmodGvrAudio {
         busses[currentBus].getPath(out busPath);
         RuntimeManager.StudioSystem.getBus(busPath, out busses[currentBus]);
         RuntimeManager.StudioSystem.flushCommands();
-        FMOD.ChannelGroup channelGroup = null;
+        FMOD.ChannelGroup channelGroup;
         busses[currentBus].getChannelGroup(out channelGroup);
         RuntimeManager.StudioSystem.flushCommands();
-        if (channelGroup != null) {
+        if (channelGroup.hasHandle()) {
           int numDsps = 0;
-          FMOD.DSP dsp = null;
           channelGroup.getNumDSPs(out numDsps);
           for (int currentDsp = 0; currentDsp < numDsps; ++currentDsp) {
             channelGroup.getDSP(currentDsp, out dsp);
-            System.Text.StringBuilder dspNameSb = new System.Text.StringBuilder(32);
+            string dspNameSb;
             int unusedInt = 0;
             uint unusedUint = 0;
-            dsp.getInfo(dspNameSb, out unusedUint, out unusedInt, out unusedInt, out unusedInt);
-            if (dspNameSb.ToString().Equals(listenerPluginName) && dsp.isValid()) {
+            dsp.getInfo(out dspNameSb, out unusedUint, out unusedInt, out unusedInt, out unusedInt);
+            if (dspNameSb.ToString().Equals(listenerPluginName) && dsp.hasHandle()) {
               return dsp;
             }
           }
@@ -233,7 +233,7 @@ public static class FmodGvrAudio {
       }
     }
     Debug.LogError(listenerPluginName + " not found in the FMOD project.");
-    return null;
+    return dsp;
   }
 
   // Right-handed to left-handed matrix converter (and vice versa).
@@ -258,5 +258,5 @@ public static class FmodGvrAudio {
   private static FMOD.VECTOR listenerPositionFmod = new FMOD.VECTOR();
 
   // FMOD GVR Listener Plugin.
-  private static FMOD.DSP listenerPlugin = null;
+  private static FMOD.DSP listenerPlugin;
 }

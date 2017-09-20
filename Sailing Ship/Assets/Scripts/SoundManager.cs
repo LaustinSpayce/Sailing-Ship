@@ -58,10 +58,10 @@ public class SoundManager : MonoBehaviour {
 	public void MusicPlaybackState ()
 	{
 		FMOD.Studio.PLAYBACK_STATE play_state;
-		if (m_MusicEvent == null)
-		{
-			m_MusicEvent = FMODUnity.RuntimeManager.CreateInstance(m_Music);
-		}
+		// if (m_MusicEvent == null)
+		// {
+		// 	m_MusicEvent = FMODUnity.RuntimeManager.CreateInstance(m_Music);
+		// }
 		m_MusicEvent.getPlaybackState(out play_state);
 		if (m_MusicVolume == 0.0f)
 		{
