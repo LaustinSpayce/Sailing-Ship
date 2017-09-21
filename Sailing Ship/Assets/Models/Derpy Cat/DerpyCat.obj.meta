@@ -43,20 +43,20 @@ ModelImporter:
     globalScale: 0.1
     meshCompression: 0
     addColliders: 1
-    importVisibility: 1
+    importVisibility: 0
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
-    secondaryUVHardAngle: 88
-    secondaryUVPackMargin: 4
+    secondaryUVAngleDistortion: 10
+    secondaryUVAreaDistortion: 20
+    secondaryUVHardAngle: 75
+    secondaryUVPackMargin: 36
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
