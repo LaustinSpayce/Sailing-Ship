@@ -413,7 +413,7 @@ namespace FMODUnity
                     return FMODPlatform.Linux;
                 case BuildTarget.StandaloneOSXIntel:
                 case BuildTarget.StandaloneOSXIntel64:
-                case BuildTarget.StandaloneOSXUniversal:
+                case BuildTarget.StandaloneOSX:
                     return FMODPlatform.Mac;
                 case BuildTarget.StandaloneWindows:
                 case BuildTarget.StandaloneWindows64:
@@ -434,7 +434,7 @@ namespace FMODUnity
                     }
                     return FMODPlatform.None;
                 #else
-                    if (EditorUserBuildSettings.metroSDK == MetroSDK.PhoneSDK81)
+                    if (EditorUserBuildSettings.wsaSDK == WSASDK.PhoneSDK81)
                     { 
                         return FMODPlatform.WindowsPhone;
                     }

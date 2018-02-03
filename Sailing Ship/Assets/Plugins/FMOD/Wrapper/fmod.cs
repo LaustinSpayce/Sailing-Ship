@@ -17,7 +17,7 @@ namespace FMOD
     */
     public class VERSION
     {
-        public const int    number = 0x00011000;
+        public const int    number = 0x00011002;
 #if (UNITY_IPHONE || UNITY_TVOS || UNITY_SWITCH) && !UNITY_EDITOR
         public const string dll    = "__Internal";
 #elif (UNITY_PS4) && !UNITY_EDITOR
@@ -26,12 +26,13 @@ namespace FMOD
         public const string dll    = "libfmodL";
 #elif (UNITY_PSP2 || UNITY_WIIU) && !UNITY_EDITOR
         public const string dll    = "libfmodstudio";
+/* Linux defines moved before the Windows define, otherwise Linux Editor tries to use Win lib when selected as build target.*/
+#elif (UNITY_EDITOR_LINUX) || ((UNITY_STANDALONE_LINUX || UNITY_ANDROID || UNITY_XBOXONE) && DEVELOPMENT_BUILD)
+        public const string dll    = "fmodL";
 #elif (UNITY_EDITOR_OSX || UNITY_EDITOR_WIN) || ((UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN) && DEVELOPMENT_BUILD)
         public const string dll    = "fmodstudioL";
 #elif (UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN)
         public const string dll    = "fmodstudio";
-#elif (UNITY_EDITOR_LINUX) || ((UNITY_STANDALONE_LINUX || UNITY_ANDROID || UNITY_XBOXONE) && DEVELOPMENT_BUILD)
-        public const string dll    = "fmodL";
 #else
         public const string dll    = "fmod";
 #endif
@@ -4457,6 +4458,7 @@ namespace FMOD
 
             public byte[] byteFromStringUTF8(string s)
             {
+                if (s == null)  return null;
                 // Allow one extra byte for null terminator
                 int maximumLength = encoding.GetMaxByteCount(s.Length) + 1;
                 if (maximumLength > buffer.Length)
